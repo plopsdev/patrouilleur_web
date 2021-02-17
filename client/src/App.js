@@ -19,7 +19,7 @@ const App = () => {
     useEffect(() => {
         const timer = setInterval(() => {
           fetchData();
-        }, 500);
+        }, 100);
     
         return () => {
           clearInterval(timer);
@@ -33,7 +33,7 @@ const App = () => {
             Sound : {sound}
             {[0, 1, 2, 3].map((raw) => {
                 return(
-                    <div className={'raw'}>
+                    <div className="row">
                         {thermicArray.map((thermic, index) => {
                             if (index>=raw*4 && index<(raw*4+4)){
                                 return <div className={`index_${index}`}>{thermic}</div>
@@ -43,7 +43,9 @@ const App = () => {
                     </div>
                 )
             })}
-            
+            <div className = "camera">
+                <img src="http://80.236.227.136:5000/" alt="" />
+            </div>
         </div>
     )
 }
