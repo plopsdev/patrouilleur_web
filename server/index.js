@@ -31,7 +31,7 @@ app.use(cors());
 app.use(express.json()); 
 
 app.get('/', (req, res) => {
-    let rawdata = fs.readFileSync('./data.json');
+    let rawdata = fs.readFileSync('./data.json'); //use this instead of require because require keeps data in cache
     let dataJSON = JSON.parse(rawdata)
     res.send(dataJSON)
 });
@@ -45,9 +45,16 @@ app.put('/:isManual', (req, res) => {
     fs.writeFileSync('./data.json', dataOUT);
     res.send('ok')
 })
-
+let fsWait = false;
 fs.watch('./data.json', function (event, filename) {
-    console.log('fichier modifié');
+    if (filename) {
+        if (fsWait) return;
+        fsWait = setTimeout(() => {
+            fsWait = false;
+        }, 10);
+        console.log('fichier modifié');
+    }
+    
 });
 
 server.listen(3002);
