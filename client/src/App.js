@@ -1,7 +1,10 @@
 import './App.css';
-import { getData } from './services';
+import { getData, updateData } from './services';
 import {React, useState, useEffect} from 'react';
 // import LinearProgressWithLabel from '@material-ui/core/LinearProgress';
+const socket = new WebSocket ('ws://localhost:3002')
+
+
 
 const App = () => {
 
@@ -13,13 +16,27 @@ const App = () => {
         let data = await getData()
         setSound(data.sound)
         setThermicArray(data.thermicArray)
-        setIsManual(data.isManual)
+        setIsManual(data.manual)
     }
+
+    const sendMessage = () => {
+        socket.send('hello from client :)');
+    }
+
+    socket.addEventListener('open', function (event) {
+        console.log('connected to WS Server')
+    })
+    
+    socket.addEventListener('message', function (event) {
+        console.log('message from server', event.data)
+    })
+    
 
     useEffect(() => {
         const timer = setInterval(() => {
           fetchData();
-        }, 100);
+          //sendMessage();
+        }, 10000);
     
         return () => {
           clearInterval(timer);
@@ -43,8 +60,15 @@ const App = () => {
                     </div>
                 )
             })}
+            
             <div className = "camera">
-                <img src="http://80.236.227.136:5000/" alt="" />
+                <button onClick={async()=> {
+                    await updateData(!isManual)
+                    setIsManual(!isManual)
+                }}>
+                    Mode Manuel
+                </button> 
+                {/* <img src="http://192.168.46.61:8081" alt="" /> */}
             </div>
         </div>
     )
