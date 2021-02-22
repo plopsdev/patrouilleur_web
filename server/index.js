@@ -1,6 +1,6 @@
 
 
-var dataJSON = require('./data');
+
 const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
@@ -13,10 +13,10 @@ const wss = new WebSocket.Server( {server:server} )
 
 wss.on('connection', function connection(ws) {
     console.log('new client has connected')
-    fs.watch('./data.json', function (event, filename) {
-        console.log('event is: ' + event);
-        ws.send('File modified')
-    });
+    // fs.watch('./data.json', function (event, filename) {
+    //     console.log('event is: ' + event);
+    //     ws.send('File modified')
+    // });
     
 
     ws.on('message', function incoming(message) {
@@ -30,9 +30,9 @@ wss.on('connection', function connection(ws) {
 app.use(cors());
 app.use(express.json()); 
 
-
-
 app.get('/', (req, res) => {
+    let rawdata = fs.readFileSync('./data.json');
+    let dataJSON = JSON.parse(rawdata)
     res.send(dataJSON)
 });
 
@@ -46,6 +46,8 @@ app.put('/:isManual', (req, res) => {
     res.send('ok')
 })
 
-
+fs.watch('./data.json', function (event, filename) {
+    console.log('fichier modifié');
+});
 
 server.listen(3002);

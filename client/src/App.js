@@ -14,6 +14,7 @@ const App = () => {
 
     const fetchData = async() => {
         let data = await getData()
+        console.log(data)
         setSound(data.sound)
         setThermicArray(data.thermicArray)
         setIsManual(data.manual)
@@ -36,7 +37,7 @@ const App = () => {
         const timer = setInterval(() => {
           fetchData();
           //sendMessage();
-        }, 10000);
+        }, 1000);
     
         return () => {
           clearInterval(timer);
