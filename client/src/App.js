@@ -19,6 +19,7 @@ const App = () => {
     const messageListener = useCallback((event) => {
         console.log('message from server', event.data);
         setThermicArray(JSON.parse(event.data).thermicArray);
+        setSound(JSON.parse(event.data).sound);
     });
 
     const fetchData = async() => {
