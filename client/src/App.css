@@ -5,3 +5,7 @@
 div.row {
     display: flex;
 }
+
+div.warn {
+  display: flex;
+}
