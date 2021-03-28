@@ -38,8 +38,11 @@ wss.on('connection', function connection(ws) {
     });
 
     ws.on('message', function incoming(message) {
-      console.log('received: %s', message);
-      ws.send('Got ur message : ' + message);
+    //   console.log('received: %s', message);z
+    //   ws.send('Got ur message : ' + message);
+      fs.writeFileSync('../python/command.txt', message, function(err) {
+          if (err) return console.log(err);
+      })
     });
   
     

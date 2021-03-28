@@ -5,7 +5,42 @@ import LinearProgressWithLabel from '@material-ui/core/LinearProgress';
 import Alert from '@material-ui/lab/Alert';
 const socket = new WebSocket ('ws://localhost:3002')
 
+function useKey(key) {
+    // Keep track of key state
+    const [pressed, setPressed] = useState(false)
 
+    // Does an event match the key we're watching?
+    const match = event => key.toLowerCase() == event.key.toLowerCase()
+
+    // Event handlers
+    const onDown = event => {
+        if (match(event)){
+            setPressed(true)
+            let message = (key + ' down')
+            socket.send(message)
+        } 
+    }
+
+    const onUp = event => {
+        if (match(event)) {
+            setPressed(false)
+            let message = (key +' up')
+            socket.send(message)
+        }
+    }
+
+    // Bind and unbind events
+    useEffect(() => {
+        window.addEventListener("keydown", onDown)
+        window.addEventListener("keyup", onUp)
+        return () => {
+            window.removeEventListener("keydown", onDown)
+            window.removeEventListener("keyup", onUp)
+        }
+    }, [key])
+
+    return pressed
+}
 
 const App = () => {
 
@@ -55,10 +90,6 @@ const App = () => {
         }
     }
 
-    const sendMessage = () => {
-        socket.send('hello from client :(');
-    }
-
     useEffect(() => {
         socket.addEventListener('open', openListener)
         socket.addEventListener('message', messageListener);
@@ -78,47 +109,12 @@ const App = () => {
         return `#FF${colorValue.toString(16)}${colorValue.toString(16)}`
     }
 
-    function useKey(key) {
-        // Keep track of key state
-        const [pressed, setPressed] = useState(false)
-    
-        // Does an event match the key we're watching?
-        const match = event => key.toLowerCase() == event.key.toLowerCase()
-    
-        // Event handlers
-        const onDown = event => {
-            if (match(event)){
-                setPressed(true)
-                console.log(key, 'down')
-            } 
-        }
-    
-        const onUp = event => {
-            if (match(event)) {
-                setPressed(false)
-                console.log(key, 'up')
-            }
-            
-        }
-    
-        // Bind and unbind events
-        useEffect(() => {
-            window.addEventListener("keydown", onDown)
-            window.addEventListener("keyup", onUp)
-            return () => {
-                window.removeEventListener("keydown", onDown)
-                window.removeEventListener("keyup", onUp)
-            }
-        }, [key])
-    
-        return pressed
-    }
 
-    const aKey = useKey('a')
-    const qKey = useKey('q')
-    const eKey = useKey('e')
-    const dKey = useKey('d')
-    // console.log(zKey)
+
+    useKey('z')
+    useKey('q')
+    useKey('s')
+    useKey('d')
 
     return(
         <>
