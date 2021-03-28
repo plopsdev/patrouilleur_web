@@ -17,8 +17,10 @@ class Liddar:
         4) source devel/setup.bash
         5) roslaunch rplidar_ros rplidar.launch
         
-        Pour vérifier qu'il fonctionne, rentrer la command suivante 
-        voir une suite de valeur : rostopic echo /scan
+        Diverse commmande lié à ros :
+            - Pour vérifier qu'il fonctionne et afficher une suite de valeur : rostopic echo /scan
+            - Pour voir les processus actif de ros : ps aux|grep ros
+        
     """
     def __init__(self):
         self.angles = None
