@@ -24,7 +24,9 @@ const App = () => {
         console.log('message from server', event.data);
         setThermicArray(JSON.parse(event.data).thermicArray);
         setSound(JSON.parse(event.data).sound);
-        soundTrigger(sound)
+        if (soundTrigger(sound)) {
+            alert('son dépassé')
+        }
         thermicTrigger(thermicArray)
     });
 
@@ -37,7 +39,8 @@ const App = () => {
 
     const soundTrigger = (sound) => {
         let sThreshold = 26
-        {sound>sThreshold ? setSoundThresholdState(true) : setSoundThresholdState(false)}
+        return (sound>sThreshold) 
+        // {sound>sThreshold ? setSoundThresholdState(true) : setSoundThresholdState(false)}
     }
 
     const thermicTrigger = (thermicArray) => {
@@ -84,11 +87,18 @@ const App = () => {
     
         // Event handlers
         const onDown = event => {
-            if (match(event)) setPressed(true)
+            if (match(event)){
+                setPressed(true)
+                console.log(key, 'down')
+            } 
         }
     
         const onUp = event => {
-            if (match(event)) setPressed(false)
+            if (match(event)) {
+                setPressed(false)
+                console.log(key, 'up')
+            }
+            
         }
     
         // Bind and unbind events
@@ -104,8 +114,11 @@ const App = () => {
         return pressed
     }
 
-    const zKey = useKey('z')
-    console.log(zKey)
+    const aKey = useKey('a')
+    const qKey = useKey('q')
+    const eKey = useKey('e')
+    const dKey = useKey('d')
+    // console.log(zKey)
 
     return(
         <>
