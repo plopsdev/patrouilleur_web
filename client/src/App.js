@@ -42,6 +42,10 @@ function useKey(key) {
     return pressed
 }
 
+
+let thermicAlertCount = 0;
+let soundAlertCount = 0;
+
 const App = () => {
 
     const [sound, setSound] = useState(0)
@@ -59,9 +63,7 @@ const App = () => {
         console.log('message from server', event.data);
         setThermicArray(JSON.parse(event.data).thermicArray);
         setSound(JSON.parse(event.data).sound);
-        if (soundTrigger(sound)) {
-            alert('son dépassé')
-        }
+        soundTrigger(sound);
         thermicTrigger(thermicArray)
     });
 
@@ -74,15 +76,22 @@ const App = () => {
 
     const soundTrigger = (sound) => {
         let sThreshold = 26
-        return (sound>sThreshold) 
-        // {sound>sThreshold ? setSoundThresholdState(true) : setSoundThresholdState(false)}
+        if (sound>sThreshold){
+            setSoundThresholdState(true);
+            soundAlertCount ++;
+            document.getElementById("soundAlertNumber").innerHTML = ("Nombre d'alertes sonores : " + soundAlertCount).bold();
+        } else {
+            setSoundThresholdState(false)
+        }   
     }
 
     const thermicTrigger = (thermicArray) => {
         let tThreshold = 24
         for (let item of thermicArray){
             if (item>tThreshold){
-                setThermicThresholdState(true)
+                setThermicThresholdState(true);
+                thermicAlertCount ++;
+                document.getElementById("thermicAlertNumber").innerHTML = ("Nombre d'alertes thermiques : " + thermicAlertCount).bold();
                 break
             } else {
                 setThermicThresholdState(false)
@@ -149,16 +158,22 @@ const App = () => {
                 
                 <div className = "camera">
 
-                {soundThresholdState ? (<div className="warn"><Alert severity="warning">This is a warning sound alert!</Alert></div>) : (<div className="warn"><h2>son bas</h2></div>)}
-                {thermicThresholdState ? (<div className="warn"><Alert severity="error">This is a warning thermic alert !</Alert></div>) : (<div className="warn"><h2>temp basse</h2></div>)}
-
+                
                     <button style={{maxWidth: '150px', marginTop:'50px'}} onClick={()=> {
                         // await updateData(!isManual)
                         setIsManual(!isManual)
                     }}>
                         Mode Manuel
                     </button> 
-                    
+
+                    <div id= "container">
+                        {soundThresholdState ? (<div className="warn"><Alert severity="warning">This is a warning sound alert!</Alert></div>) : (<div className="warn"><h3>son OK</h3></div>)}
+                        <div id="soundAlertNumber"></div>
+                    </div>
+                    <div id= "container">
+                        {thermicThresholdState ? (<div className="warn"><Alert severity="error">This is a warning thermic alert !</Alert></div>) : (<div className="warn"><h3>temperature OK</h3></div>)}
+                        <div id="thermicAlertNumber"></div>
+                    </div>
                 </div>
             </div>)}
         </>

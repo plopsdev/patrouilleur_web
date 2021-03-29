@@ -9,3 +9,20 @@ div.row {
 div.warn {
   display: flex;
 }
+
+h3{
+  color: green;
+}
+
+#thermicAlertNumber,#soundAlertNumber{
+  color: purple;
+}
+
+#container {
+width:fit-content; 
+border: 3px double rgb(151, 42, 42);
+border-radius: 10px;
+margin-top: 15px;
+margin-bottom: 15px;
+padding: 6px;
+}
