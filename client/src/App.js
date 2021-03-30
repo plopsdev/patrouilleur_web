@@ -80,6 +80,7 @@ const App = () => {
             setSoundThresholdState(true);
             soundAlertCount ++;
             document.getElementById("soundAlertNumber").innerHTML = ("Nombre d'alertes sonores : " + soundAlertCount).bold();
+            document.getElementById("soundAlertValue").innerHTML = ("Valeur sonore : " + sound).bold();
         } else {
             setSoundThresholdState(false)
         }   
@@ -92,6 +93,7 @@ const App = () => {
                 setThermicThresholdState(true);
                 thermicAlertCount ++;
                 document.getElementById("thermicAlertNumber").innerHTML = ("Nombre d'alertes thermiques : " + thermicAlertCount).bold();
+                document.getElementById("thermicAlertValue").innerHTML = ("Valeurs thermiques : " + thermicArray).bold();
                 break
             } else {
                 setThermicThresholdState(false)
@@ -169,10 +171,12 @@ const App = () => {
                     <div id= "container">
                         {soundThresholdState ? (<div className="warn"><Alert severity="warning">This is a warning sound alert!</Alert></div>) : (<div className="warn"><h3>son OK</h3></div>)}
                         <div id="soundAlertNumber"></div>
+                        <div id="soundAlertValue"></div>
                     </div>
                     <div id= "container">
                         {thermicThresholdState ? (<div className="warn"><Alert severity="error">This is a warning thermic alert !</Alert></div>) : (<div className="warn"><h3>temperature OK</h3></div>)}
                         <div id="thermicAlertNumber"></div>
+                        <div id="thermicAlertValue"></div>
                     </div>
                 </div>
             </div>)}
