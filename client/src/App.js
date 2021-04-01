@@ -1,47 +1,10 @@
 import './App.css';
+import Manual from './pages/Manual'
 import { getData, updateData } from './services';
 import {React, useState, useEffect, useCallback} from 'react';
 import LinearProgressWithLabel from '@material-ui/core/LinearProgress';
 import Alert from '@material-ui/lab/Alert';
-const socket = new WebSocket ('ws://localhost:3002')
-
-function useKey(key) {
-    // Keep track of key state
-    const [pressed, setPressed] = useState(false)
-
-    // Does an event match the key we're watching?
-    const match = event => key.toLowerCase() == event.key.toLowerCase()
-
-    // Event handlers
-    const onDown = event => {
-        if (match(event)){
-            setPressed(true)
-            let message = (key + ' down')
-            socket.send(message)
-        } 
-    }
-
-    const onUp = event => {
-        if (match(event)) {
-            setPressed(false)
-            let message = (key +' up')
-            socket.send(message)
-        }
-    }
-
-    // Bind and unbind events
-    useEffect(() => {
-        window.addEventListener("keydown", onDown)
-        window.addEventListener("keyup", onUp)
-        return () => {
-            window.removeEventListener("keydown", onDown)
-            window.removeEventListener("keyup", onUp)
-        }
-    }, [key])
-
-    return pressed
-}
-
+import socket from './socket'
 
 let thermicAlertCount = 0;
 let soundAlertCount = 0;
@@ -120,25 +83,15 @@ const App = () => {
 
 
 
-    useKey('z')
-    useKey('q')
-    useKey('s')
-    useKey('d')
+
 
     return(
         <>
             {isManual ? (
-            <div style={{display: 'flex', flexDirection:'column', marginLeft: '50px'}}>
-                <h1>Mode Manuel</h1>
-                
-                <img src="http://192.168.46.61:8081" alt="Stream" />
-                <button style={{maxWidth: '150px'}} onClick={()=> {
-                        // await updateData(!isManual)
-                        setIsManual(!isManual)
-                    }}>
-                        Mode Automatique
-                </button> 
-            </div>) : (
+                <Manual
+                    setIsManual = {setIsManual}
+                />
+            ) : (
             <div style = {{marginLeft: '50px'}}>
                 <h1>Mode Automatique</h1>
                 <LinearProgressWithLabel style={{maxWidth:'30%', marginBottom:'50px'}} variant='determinate'  value={sound} />
