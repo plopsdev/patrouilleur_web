@@ -2,10 +2,6 @@ import React  from 'react'
 import {useEffect, useState} from 'react'
 import socket from '../socket'
 
-
-
-
-
 const Manual = ({setIsManual}) => {
     function useKey(key) {
         // Keep track of key state
@@ -19,7 +15,7 @@ const Manual = ({setIsManual}) => {
             if (match(event) && event.repeat === false){
                 console.log(event)
                 setPressed(true)
-                let message = (key + ' down')
+                let message = (key + '_down')
                 socket.send(message)
             } 
         }
@@ -27,7 +23,7 @@ const Manual = ({setIsManual}) => {
         const onUp = event => {
             if (match(event) && event.repeat === false) {
                 setPressed(false)
-                let message = (key +' up')
+                let message = (key +'_up')
                 socket.send(message)
             }
         }
@@ -55,6 +51,7 @@ const Manual = ({setIsManual}) => {
             <img src="http://192.168.46.61:8081" alt="Stream" />
                 <button style={{maxWidth: '150px'}} onClick={()=> {
                         // await updateData(!isManual)
+                        socket.send("stop")
                         setIsManual(false)
                     }}>
                         Mode Automatique

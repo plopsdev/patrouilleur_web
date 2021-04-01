@@ -5,6 +5,7 @@ import {React, useState, useEffect, useCallback} from 'react';
 import LinearProgressWithLabel from '@material-ui/core/LinearProgress';
 import Alert from '@material-ui/lab/Alert';
 import socket from './socket'
+import ColorArray from './components/ColorArray'
 
 let thermicAlertCount = 0;
 let soundAlertCount = 0;
@@ -73,47 +74,17 @@ const App = () => {
             socket.removeEventListener('message', messageListener);
         };
     }, [ openListener, messageListener ]);
-    
-    const colorGenerator = (tIn) => {
-        let tMin = 20;
-        let tMax = 35;
-        let coef = 255/(tMax-tMin)
-        let tProp = tIn-tMin 
-        let colorValue = 255-tProp*coef
-        return `#FF${colorValue.toString(16)}${colorValue.toString(16)}`
-    }
-
-
-
-
 
     return(
         <>
             {isManual ? (
-                <Manual
-                    setIsManual = {setIsManual}
-                />
+                <Manual setIsManual = {setIsManual}/>
             ) : (
             <div style = {{marginLeft: '50px'}}>
                 <h1>Mode Automatique</h1>
                 <LinearProgressWithLabel style={{maxWidth:'30%', marginBottom:'50px'}} variant='determinate'  value={sound} />
-                {[0, 1, 2, 3].map((raw) => {
-                    return(
-                        <div className="row" key={raw}>
-                            {thermicArray.map((thermic, index) => {
-                                if (index>=raw*4 && index<(raw*4+4)){
-                                    return <div key={index} style={{width:'30px', height: '30px', backgroundColor:colorGenerator(thermic)}}></div>
-                                }
-                            })}
-                        </div>
-                    )
-                })}
-
-                
-                
-                <div className = "camera">
-
-                
+                <ColorArray thermicArray={thermicArray}/>
+                <div className = "camera">    
                     <button style={{maxWidth: '150px', marginTop:'50px'}} onClick={()=> {
                         // await updateData(!isManual)
                         setIsManual(!isManual)

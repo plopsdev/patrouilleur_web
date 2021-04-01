@@ -7,12 +7,11 @@ from watchdog.events import PatternMatchingEventHandler
 # ser = serial.Serial(periph, baudrate)
 
 
-PATHTOBEOBSERVED = '/Users/jojom/Documents/patrouilleur_web/python'
+PATHTOBEOBSERVED = '/Users/jojom/Documents/robotic_project/patrouilleur_web/python'
 
 def on_modified(event):
     file = open("python/command.txt", "r")
     command = file.read()
-    print("hello")
     print(command)
     #ser.write(command.encode())
 
