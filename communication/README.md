@@ -1,4 +1,4 @@
-# Descriptions des fichier :
+# Descriptions des fichiers :
 ## envois_array.ino/.py : 
 Code permettant l'envois une liste de charactère.
 
