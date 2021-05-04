@@ -9,14 +9,19 @@ from watchdog.events import PatternMatchingEventHandler
 
 PATHTOBEOBSERVED = '/Users/jojom/Documents/robotic_project/patrouilleur_web/python'
 
-def on_modified(event):
-    file = open("python/command.txt", "r")
-    command = file.read()
-    print(command)
-    #ser.write(command.encode())
+class Test():
+    def __init__(self):
+        this.key="key"
+
+    def on_modified(event):
+        file = open("python/command.txt", "r")
+        command = file.read()
+        this.key=command
 
   
 if __name__ == "__main__":
+
+    test = Test()
 
     patterns = "*"
     ignore_patterns = ""
@@ -35,7 +40,7 @@ if __name__ == "__main__":
     my_observer.start()
     try:
         while True:
-            print("z")
+            print(test.key)
             time.sleep(0.3)
     except KeyboardInterrupt:
         my_observer.stop()

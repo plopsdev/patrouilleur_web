@@ -11,6 +11,12 @@ from geometry_msgs.msg import Twist
 
 import sys, select, termios, tty
 
+#observer stuff
+
+import time
+from watchdog.observers import Observer
+from watchdog.events import PatternMatchingEventHandler
+
 msg = """
 Reading from the keyboard  and Publishing to Twist!
 ---------------------------
@@ -177,6 +183,11 @@ class PublishThread(threading.Thread):
                 self.key = "d"
                 self.isBusy = True
                 return "m"
+    
+    def on_modified(event):
+        file = open("python/command.txt", "r")
+        this.command = file.read()
+        this.key = this.translator()
 
 
 def getKey(key_timeout):
@@ -192,6 +203,7 @@ def getKey(key_timeout):
 
 def vels(speed, turn):
     return "currently:\tspeed %s\tturn %s " % (speed,turn)
+
 
 if __name__=="__main__":
     settings = termios.tcgetattr(sys.stdin)
@@ -213,17 +225,35 @@ if __name__=="__main__":
     th = 0
     status = 0
 
+    #observer stuff
+
+    patterns = "*"
+    ignore_patterns = ""
+    ignore_directories = False
+    case_sensitive = True
+    my_event_handler = PatternMatchingEventHandler(patterns, ignore_patterns, ignore_directories, case_sensitive)
+    
+    my_event_handler.on_modified = on_modified
+ 
+    path = PATHTOBEOBSERVED
+    go_recursively = True
+
+    my_observer = Observer()
+    my_observer.schedule(my_event_handler, path, recursive=go_recursively)
+
+    my_observer.start()
+
+
     try:
         pub_thread.wait_for_subscribers()
         pub_thread.update(x, y, z, th, speed, turn)
 
         print(msg)
         print(vels(speed,turn))
-        while(1):
+        while True:
             # key = getKey(key_timeout)
-            file = open("python/command.txt", "r")
-            pub_thread.command = file.read()
-            key = pub_thread.translator()
+            key = pub_thread.key
+            print(key)
             if key in moveBindings.keys():
                 x = moveBindings[key][0]
                 y = moveBindings[key][1]
@@ -246,15 +276,18 @@ if __name__=="__main__":
                 y = 0
                 z = 0
                 th = 0
-                if (key == '\x03'):
+                if (key == '\x03'): #si ctrl+C
                     break
  
             pub_thread.update(x, y, z, th, speed, turn)
 
     except Exception as e:
         print(e)
+    except KeyboardInterrupt:
+        my_observer.stop()
 
     finally:
         pub_thread.stop()
 
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+    my_observer.join() 
