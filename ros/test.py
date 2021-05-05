@@ -38,6 +38,8 @@ e/c : increase/decrease only angular speed by 10%
 CTRL-C to quit
 """
 
+PATHTOBEOBSERVED = '/Users/jojom/Documents/robotic_project/patrouilleur_web/python'
+
 moveBindings = {
         'i':(1,0,0,0),
         'o':(1,0,0,-1),
@@ -184,10 +186,10 @@ class PublishThread(threading.Thread):
                 self.isBusy = True
                 return "m"
     
-    def on_modified(event):
+    def on_modified(self, event):
         file = open("python/command.txt", "r")
-        this.command = file.read()
-        this.key = this.translator()
+        self.command = file.read()
+        self.key = self.translator()
 
 
 def getKey(key_timeout):
@@ -233,7 +235,7 @@ if __name__=="__main__":
     case_sensitive = True
     my_event_handler = PatternMatchingEventHandler(patterns, ignore_patterns, ignore_directories, case_sensitive)
     
-    my_event_handler.on_modified = on_modified
+    my_event_handler.on_modified = pub_thread.on_modified
  
     path = PATHTOBEOBSERVED
     go_recursively = True

@@ -11,12 +11,12 @@ PATHTOBEOBSERVED = '/Users/jojom/Documents/robotic_project/patrouilleur_web/pyth
 
 class Test():
     def __init__(self):
-        this.key="key"
+        self.key="key"
 
     def on_modified(event):
         file = open("python/command.txt", "r")
         command = file.read()
-        this.key=command
+        self.key=command
 
   
 if __name__ == "__main__":
