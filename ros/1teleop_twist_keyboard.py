@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from __future__ import print_function
 
@@ -149,6 +149,13 @@ class PublishThread(threading.Thread):
         self.publisher.publish(twist)
     
     def translator(self):
+        print("je suis dans translator")
+        print("isBusy :")
+        print(self.isBusy)
+        
+        print("self.command_in :")
+        print(self.command_in)
+        
         if self.isBusy :
             if self.command_in == "z_up" and self.current_key == "z":
                 self.isBusy = False
@@ -184,7 +191,8 @@ class PublishThread(threading.Thread):
 
     def getKey(self, key_timeout):
         tty.setraw(sys.stdin.fileno())
-        file = open("python/command.txt", "r")
+        print("je suis dans getkey")
+        file = open("/home/patrouilleur/node/patrouilleur_web/python/command.txt", "r")
         self.command_in = file.read()
         self.translator()
         time.sleep(0.1)

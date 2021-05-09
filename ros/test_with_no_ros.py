@@ -19,13 +19,13 @@ class PublishThread:
             if self.command_in == "z_up" and self.current_key == "z":
                 self.isBusy = False
                 self.command_out = "k"
-            elif self.command_in == "q_up" and self.current_key == "q":
+            if self.command_in == "q_up" and self.current_key == "q":
                 self.isBusy = False
                 self.command_out = "k"
-            elif self.command_in == "s_up" and self.current_key == "s":
+            if self.command_in == "s_up" and self.current_key == "s":
                 self.isBusy = False
                 self.command_out = "k"
-            elif self.command_in == "d_up" and self.current_key == "d":
+            if self.command_in == "d_up" and self.current_key == "d":
                 self.isBusy = False
                 self.command_out = "k"
         
@@ -34,15 +34,15 @@ class PublishThread:
                 self.current_key = "z"
                 self.isBusy = True
                 self.command_out = "i"
-            elif self.command_in == "q_down":
+            if self.command_in == "q_down":
                 self.current_key = "q"
                 self.isBusy = True
                 self.command_out = "j"
-            elif self.command_in == "s_down":
+            if self.command_in == "s_down":
                 self.current_key = "s"
                 self.isBusy = True
                 self.command_out = "<"
-            elif self.command_in == "d_down":
+            if self.command_in == "d_down":
                 self.current_key = "d"
                 self.isBusy = True
                 self.command_out = "m"
