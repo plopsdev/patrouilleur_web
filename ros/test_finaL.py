@@ -78,8 +78,9 @@ class PublishThread(threading.Thread):
         self.done = False
 
         self.isBusy = False
-        self.command = ""
-        self.key = ""
+        self.command_in = ""
+        self.command_out = ""
+        self.current_key = ""
 
         # Set timeout to None if rate is 0 (causes new_message to wait forever
         # for new data to publish)
@@ -149,51 +150,51 @@ class PublishThread(threading.Thread):
     
     def translator(self):
         if self.isBusy :
-            if self.command == "z_up" and self.key == "z":
+            if self.command_in == "z_up" and self.current_key == "z":
                 self.isBusy = False
-                return "k"
-            elif self.command == "q_up" and self.key == "q":
+                self.command_out = "k"
+            elif self.command_in == "q_up" and self.current_key == "q":
                 self.isBusy = False
-                return "k"
-            elif self.command == "s_up" and self.key == "s":
+                self.command_out = "k"
+            elif self.command_in == "s_up" and self.current_key == "s":
                 self.isBusy = False
-                return "k"
-            elif self.command == "d_up" and self.key == "d":
+                self.command_out = "k"
+            elif self.command_in == "d_up" and self.current_key == "d":
                 self.isBusy = False
-                return "k"
+                self.command_out = "k"
         
-        else : 
-            if self.command == "z_down":
-                self.key = "z"
+        else: 
+            if self.command_in == "z_down":
+                self.current_key = "z"
                 self.isBusy = True
-                return "i"
-            elif self.command == "q_down":
-                self.key = "q"
+                self.command_out = "i"
+            elif self.command_in == "q_down":
+                self.current_key = "q"
                 self.isBusy = True
-                return "j"
-            elif self.command == "s_down":
-                self.key = "s"
+                self.command_out = "j"
+            elif self.command_in == "s_down":
+                self.current_key = "s"
                 self.isBusy = True
-                return "<"
-            elif self.command == "d_down":
-                self.key = "d"
+                self.command_out = "<"
+            elif self.command_in == "d_down":
+                self.current_key = "d"
                 self.isBusy = True
-                return "m"
+                self.command_out = "m"
 
 
     def getKey(self, key_timeout):
         tty.setraw(sys.stdin.fileno())
         file = open("python/command.txt", "r")
         self.command = file.read()
-        key = self.translator()
-        time.sleep(1)
+        self.translator()
+        time.sleep(0.1)
         # rlist, _, _ = select.select([sys.stdin], [], [], key_timeout)
         # if rlist:
         #     key = sys.stdin.read(1)
         # else:
         #     key = ''
         # termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
-        return key
+        # return key
 
 
 def vels(speed, turn):
@@ -226,7 +227,8 @@ if __name__=="__main__":
         print(msg)
         print(vels(speed,turn))
         while(1):
-            key = pub_thread.getKey(key_timeout)
+            pub_thread.getKey(key_timeout)
+            key=pub_thread.command_out
             if key in moveBindings.keys():
                 x = moveBindings[key][0]
                 y = moveBindings[key][1]
