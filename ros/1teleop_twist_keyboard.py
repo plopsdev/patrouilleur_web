@@ -149,13 +149,6 @@ class PublishThread(threading.Thread):
         self.publisher.publish(twist)
     
     def translator(self):
-        print("je suis dans translator")
-        print("isBusy :")
-        print(self.isBusy)
-        
-        print("self.command_in :")
-        print(self.command_in)
-        
         if self.isBusy :
             if self.command_in == "z_up" and self.current_key == "z":
                 self.isBusy = False
