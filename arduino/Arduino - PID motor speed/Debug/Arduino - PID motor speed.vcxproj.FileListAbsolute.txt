@@ -1,0 +1,5 @@
+C:\Users\calug\OneDrive\Bureau\Tout mes fichiers\Cours\4EO\Mecatronique\Q2\Arduino - PID motor speed\Debug\Arduino - PID motor speed.vcxprojAssemblyReference.cache
+C:\Users\calug\OneDrive\Bureau\Tout mes fichiers\Cours\4EO\Mecatronique\Q2\Arduino - PID motor speed\Debug\Arduino___PID_motor_speed.Form1.resources
+C:\Users\calug\OneDrive\Bureau\Tout mes fichiers\Cours\4EO\Mecatronique\Q2\Arduino - PID motor speed\Debug\Arduino - PID motor speed.vcxproj.GenerateResource.cache
+C:\Users\calug\OneDrive\Bureau\Tout mes fichiers\Cours\4EO\Mecatronique\Q2\Arduino - PID motor speed\Debug\Arduino - PID motor speed.exe
+C:\Users\calug\OneDrive\Bureau\Tout mes fichiers\Cours\4EO\Mecatronique\Q2\Arduino - PID motor speed\Debug\Arduino - PID motor speed.pdb
